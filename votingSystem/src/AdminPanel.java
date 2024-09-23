@@ -52,7 +52,6 @@ public class AdminPanel extends JFrame {
         setVisible(true);
     }
 
-    // Method to add a new user with validation
     private void addUser() {
         String username = null;
         String password = null;
@@ -87,14 +86,30 @@ public class AdminPanel extends JFrame {
         while (true) {
             rollNo = JOptionPane.showInputDialog("Enter the new user's Roll No (1-45):");
             try {
+                // Ensure roll number is a valid integer
                 int rollNoInt = Integer.parseInt(rollNo);
                 if (rollNoInt < 1 || rollNoInt > 45) {
                     JOptionPane.showMessageDialog(this, "Roll No. must be between 1 and 45.");
                     continue;  // Ask again
                 }
+    
+                // Check if roll number already exists using a final variable
+                String finalRollNo = rollNo;
+                boolean rollNoExists = users.values().stream()
+                    .anyMatch(user -> user.getRollNo() != null && user.getRollNo().equals(finalRollNo));
+                if (rollNoExists) {
+                    JOptionPane.showMessageDialog(this, "Roll No. already exists. Please choose a different Roll No.");
+                    continue;  // Ask again
+                }
+    
                 break;  // Valid roll number
             } catch (NumberFormatException e) {
+                // Handle invalid number input
                 JOptionPane.showMessageDialog(this, "Invalid Roll No. Please enter a valid number between 1 and 45.");
+            } catch (Exception e) {
+                // Print the error for debugging
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage());  // Provide more info
             }
         }
     
@@ -105,6 +120,16 @@ public class AdminPanel extends JFrame {
                 JOptionPane.showMessageDialog(this, "Registration number must be exactly 6 digits.");
                 continue;  // Ask again
             }
+    
+            // Check if registration number already exists using a final variable
+            String finalRegNo = regNo;
+            boolean regNoExists = users.values().stream()
+                .anyMatch(user -> user.getRegistrationLast4() != null && user.getRegistrationLast4().equals(finalRegNo));
+            if (regNoExists) {
+                JOptionPane.showMessageDialog(this, "Registration No. already exists. Please choose a different Registration No.");
+                continue;  // Ask again
+            }
+    
             break;  // Valid registration number
         }
     
@@ -113,6 +138,9 @@ public class AdminPanel extends JFrame {
         saveUserToFile(username, password, rollNo, regNo);
         JOptionPane.showMessageDialog(this, "New user '" + username + "' added successfully!");
     }
+    
+    
+    
     
 
     // Method to save user details to a file

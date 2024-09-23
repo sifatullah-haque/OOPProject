@@ -6,6 +6,7 @@ public class User {
     private boolean hasVoted;
     private String votedCandidate;
 
+    // Constructor
     public User(String username, String password, String rollNo, String registrationLast4) {
         this.username = username;
         this.password = password;
@@ -15,12 +16,13 @@ public class User {
         this.votedCandidate = null;
     }
 
+    // Getters
     public String getUsername() {
         return username;
     }
 
-    public boolean checkPassword(String password) {
-        return this.password.equals(password);
+    public String getPassword() {  // Add this method
+        return password;
     }
 
     public String getRollNo() {
@@ -35,12 +37,18 @@ public class User {
         return hasVoted;
     }
 
-    public void setVoted(boolean hasVoted, String candidate) {
-        this.hasVoted = hasVoted;
-        this.votedCandidate = candidate;
-    }
-
     public String getVotedCandidate() {
         return votedCandidate;
+    }
+
+    // Method to check if the provided password is correct
+    public boolean checkPassword(String inputPassword) {  // Add this method
+        return this.password.equals(inputPassword);
+    }
+
+    // Setters
+    public void setVoted(boolean hasVoted, String votedCandidate) {
+        this.hasVoted = hasVoted;
+        this.votedCandidate = votedCandidate;
     }
 }
